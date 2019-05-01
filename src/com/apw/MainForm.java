@@ -12,12 +12,13 @@ public class MainForm {
     private JRadioButton radioButton4;
     private JButton button1;
     private JPanel mainPanel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
-    private JTextField textField4;
-    private JTextField textField5;
+    private JTextField daneTekstoweField;
+    private JTextField daneBinarneField;
+    private JTextField daneAlgorytmuField;
+    private JTextField bityPrzeklamaneField;
+    private JTextField danePrzeklamaneField;
     private JPanel radioPanel;
+    private JTextField komunikatField;
     private int radioOption = 1;
 
     public MainForm() {
@@ -48,26 +49,26 @@ public class MainForm {
         radioButton2.addActionListener(e -> radioOption = 2);
         radioButton3.addActionListener(e -> radioOption = 3);
         radioButton4.addActionListener(e -> radioOption = 4);
-        textField1.getDocument().addDocumentListener(new DocumentListener() {
+        daneTekstoweField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                textField2.setText(stringToBinary(textField1.getText()));
+                daneBinarneField.setText(stringToBinary(daneTekstoweField.getText()));
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                textField2.setText(stringToBinary(textField1.getText()));
+                daneBinarneField.setText(stringToBinary(daneTekstoweField.getText()));
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                textField2.setText(stringToBinary(textField1.getText()));
+                daneBinarneField.setText(stringToBinary(daneTekstoweField.getText()));
             }
         });
     }
 
     private void doAction(int a) {
-        textField1.setText("dupa dupa" + a);
+        daneTekstoweField.setText("dupa dupa" + a);
 
     }
 
