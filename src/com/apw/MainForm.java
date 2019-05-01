@@ -27,10 +27,7 @@ public class MainForm {
         button1.addActionListener(e -> {
             switch (radioOption) {
                 case 1:
-                    doAction(1);
-
-                    //todo dodać obsługę gdy jest wybrany 1 radio
-                    // jakąć funkcje żeby ładnie się patrzyło i zmieniało ten kod
+                    parity();
                     break;
                 case 2:
                     doAction(2);
@@ -95,6 +92,75 @@ public class MainForm {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+    public void parity(){
+        String error = null;
+        String endString = "";
+
+        String oryginalString = daneBinarneField.getText();
+        String faultString = bityPrzeklamaneField.getText();
+
+        char[] tab = oryginalString.toCharArray();
+        char[] tab2 = faultString.toCharArray();
+
+        int parity = 0;
+        int parity2 = 0;
+
+        //walidacja i ustalenie porzystości pierwszego ciągu
+        for (int i = 0; i < oryginalString.length(); i++) {
+            if (tab[i] == '1') {
+                parity++;
+            }
+            if (tab[i] == '0') {
+                continue;
+            }
+            if(tab[i] != '0' && tab[i] != '1'){
+                error = "Niepoprawne dane wejściowe";
+                komunikatField.setText(error);
+            }
+        }
+
+        //dodanie bitu parzystości
+        if (parity % 2 == 0) {
+            endString += 0;
+            bitParzystosciField.setText("1");
+        } else if (parity % 2 == 1) {
+            endString += 1;
+            bitParzystosciField.setText("1");
+        }
+
+        //stworzenie strigu wyjściowego
+        for (int i = 0; i < oryginalString.length(); i++) {
+            endString += tab[i];
+        }
+        danePrzeklamaneField.setText(endString);
+
+        //walidacja drugiego ciągu
+        if (faultString.length() != endString.length()) {
+            error = "Niepoprawna długość ciągu";
+            komunikatField.setText(error);
+        }
+        for (int i = 0; i < faultString.length(); i++) {
+            if (tab2[i] == '1') {
+                parity2++;
+            }
+            if (tab2[i] == '0') {
+                continue;
+            }
+            if(tab2[i] != '0' && tab2[i] != '1'){
+                error = "Niepoprawne dane wyjściowe";
+                komunikatField.setText(error);
+            }
+        }
+
+        //sprawdzenie czy nie ma błędów przekłamanym ciągu
+        if(error == null)
+        {
+            if(parity2 % 2 == 1)
+                komunikatField.setText("Wystąpił błąd");
+            else
+                komunikatField.setText("Nie znaleziono błędu");
+        }
     }
 
 }
