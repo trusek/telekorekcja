@@ -17,6 +17,7 @@ public class MainForm {
     private JTextField textField3;
     private JTextField textField4;
     private JTextField textField5;
+    private JPanel radioPanel;
     private int radioOption = 1;
 
     public MainForm() {
