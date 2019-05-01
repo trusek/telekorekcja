@@ -19,6 +19,7 @@ public class MainForm {
     private JTextField danePrzeklamaneField;
     private JPanel radioPanel;
     private JTextField komunikatField;
+    private JTextField bitParzystosciField;
     private int radioOption = 1;
 
     public MainForm() {
