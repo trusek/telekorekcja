@@ -1,8 +1,8 @@
 package com.apw;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class MainForm {
 
@@ -22,59 +22,69 @@ public class MainForm {
 
     public MainForm() {
 
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                switch (radioOption) {
-                    case 1:
-                        doAction(1);
+        button1.addActionListener(e -> {
+            switch (radioOption) {
+                case 1:
+                    doAction(1);
 
-                        //todo dodać obsługę gdy jest wybrany 1 radio
-                        // jakąć funkcje żeby ładnie się patrzyło i zmieniało ten kod
-                        break;
-                    case 2:
-                        doAction(2);
-                        //todo dodać obsługę gdy jest wybrany 2 radio
-                        break;
-                    case 3:
-                        doAction(1);
-                        //todo dodać obsługę gdy jest wybrany 3 radio
-                        break;
-                    case 4:
-                        doAction(1);
-                        //todo dodać obsługę gdy jest wybrany 4 radio
-                        break;
-                }
+                    //todo dodać obsługę gdy jest wybrany 1 radio
+                    // jakąć funkcje żeby ładnie się patrzyło i zmieniało ten kod
+                    break;
+                case 2:
+                    doAction(2);
+                    //todo dodać obsługę gdy jest wybrany 2 radio
+                    break;
+                case 3:
+                    doAction(1);
+                    //todo dodać obsługę gdy jest wybrany 3 radio
+                    break;
+                case 4:
+                    doAction(1);
+                    //todo dodać obsługę gdy jest wybrany 4 radio
+                    break;
             }
         });
-        radioButton1.addActionListener(new ActionListener() {
+        radioButton1.addActionListener(e -> radioOption = 1);
+        radioButton2.addActionListener(e -> radioOption = 2);
+        radioButton3.addActionListener(e -> radioOption = 3);
+        radioButton4.addActionListener(e -> radioOption = 4);
+        textField1.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                radioOption = 1;
+            public void insertUpdate(DocumentEvent e) {
+                textField2.setText(stringToBinary(textField1.getText()));
             }
-        });
-        radioButton2.addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-                radioOption = 2;
+            public void removeUpdate(DocumentEvent e) {
+                textField2.setText(stringToBinary(textField1.getText()));
             }
-        });
-        radioButton3.addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(ActionEvent e) {
-                radioOption = 3;
-            }
-        });
-        radioButton4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                radioOption = 4;
+            public void changedUpdate(DocumentEvent e) {
+                textField2.setText(stringToBinary(textField1.getText()));
             }
         });
     }
 
     private void doAction(int a) {
         textField1.setText("dupa dupa" + a);
+
+    }
+
+    public String stringToBinary(String str) {
+
+        byte[] bytes = str.getBytes();
+        StringBuilder binary = new StringBuilder();
+        for (byte b : bytes) {
+            int val = b;
+            for (int i = 0; i < 8; i++) {
+                binary.append((val & 128) == 0 ? 0 : 1);
+                val <<= 1;
+            }
+            binary.append("");
+        }
+
+        return binary.toString();
     }
 
     public static void main(String[] args) {
