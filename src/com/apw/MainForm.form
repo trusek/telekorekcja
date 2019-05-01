@@ -19,7 +19,7 @@
             </constraints>
             <properties>
               <selected value="true"/>
-              <text value="RadioButton"/>
+              <text value="Parzystość"/>
             </properties>
           </component>
           <component id="ec50a" class="javax.swing.JRadioButton" binding="radioButton2" default-binding="true">
