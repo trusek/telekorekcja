@@ -130,7 +130,7 @@ public class MainForm {
         //dodanie bitu parzystości
         if (parity % 2 == 0) {
             endString += 0;
-            bitParzystosciField.setText("1");
+            bitParzystosciField.setText("0");
         } else if (parity % 2 == 1) {
             endString += 1;
             bitParzystosciField.setText("1");
