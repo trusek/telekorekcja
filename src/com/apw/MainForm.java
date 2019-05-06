@@ -26,8 +26,8 @@ public class MainForm {
     private JLabel danePrzeklamaneLabel;
     private JLabel daneTekstoweLabel;
     private int radioOption = 1;
-    private String crc12="1100000001111";
-    private String crc16="11000000000000101";
+    private String crc12 = "1100000001111";
+    private String crc16 = "11000000000000101";
 
     public MainForm() {
 
@@ -50,10 +50,22 @@ public class MainForm {
                     break;
             }
         });
-        radioButton1.addActionListener(e -> {radioOption = 1;customFieldNames();});
-        radioButton2.addActionListener(e -> {radioOption = 2;crcFieldNames();});
-        radioButton3.addActionListener(e -> {radioOption = 3;crcFieldNames();});
-        radioButton4.addActionListener(e -> {radioOption = 4;customFieldNames();});
+        radioButton1.addActionListener(e -> {
+            radioOption = 1;
+            customFieldNames();
+        });
+        radioButton2.addActionListener(e -> {
+            radioOption = 2;
+            crcFieldNames();
+        });
+        radioButton3.addActionListener(e -> {
+            radioOption = 3;
+            crcFieldNames();
+        });
+        radioButton4.addActionListener(e -> {
+            radioOption = 4;
+            customFieldNames();
+        });
         daneTekstoweField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -100,7 +112,8 @@ public class MainForm {
         frame.pack();
         frame.setVisible(true);
     }
-    public void parity(){
+
+    public void parity() {
         String error = null;
         String endString = "";
 
@@ -121,7 +134,7 @@ public class MainForm {
             if (tab[i] == '0') {
                 continue;
             }
-            if(tab[i] != '0' && tab[i] != '1'){
+            if (tab[i] != '0' && tab[i] != '1') {
                 error = "Niepoprawne dane wejściowe";
                 komunikatField.setText(error);
             }
@@ -154,16 +167,15 @@ public class MainForm {
             if (tab2[i] == '0') {
                 continue;
             }
-            if(tab2[i] != '0' && tab2[i] != '1'){
+            if (tab2[i] != '0' && tab2[i] != '1') {
                 error = "Niepoprawne dane wyjściowe";
                 komunikatField.setText(error);
             }
         }
 
         //sprawdzenie czy nie ma błędów przekłamanym ciągu
-        if(error == null)
-        {
-            if(parity2 % 2 == 1)
+        if (error == null) {
+            if (parity2 % 2 == 1)
                 komunikatField.setText("Wystąpił błąd");
             else
                 komunikatField.setText("Nie znaleziono błędu");
@@ -171,26 +183,29 @@ public class MainForm {
     }
 
     //obliczenie sumy kontrolnej i dodanie jej do wiadomości
-    public void crcEncode(String crc){
-        String message=daneBinarneField.getText();
-        StringBuilder encoded=new StringBuilder(message);
-        for(int i=0;i<crc.length()-1;i++){
+    public void crcEncode(String crc) {
+        String message = daneBinarneField.getText();
+        StringBuilder encoded = new StringBuilder(message);
+        for (int i = 0; i < crc.length() - 1; i++) {
             encoded.append('0');
         }
-        for(int i=0;i<=encoded.length()-crc.length();){
-            for(int j=0;j<crc.length();j++){
+        encodeHelper(crc, encoded);
+        String finalMessage = message + encoded.toString().substring(encoded.length() - crc.length() + 1);
+        bityPrzeklamaneField.setText(finalMessage);
+    }
+
+    private void encodeHelper(String crc, StringBuilder encoded) {
+        for (int i = 0; i <= encoded.length() - crc.length(); ) {
+            for (int j = 0; j < crc.length(); j++) {
                 //operacja modulo
-                if(encoded.charAt(i+j)==crc.charAt(j)){
-                    encoded.setCharAt(i+j, '0');
-                }
-                else{
-                    encoded.setCharAt(i+j, '1');
+                if (encoded.charAt(i + j) == crc.charAt(j)) {
+                    encoded.setCharAt(i + j, '0');
+                } else {
+                    encoded.setCharAt(i + j, '1');
                 }
             }
-            for(;i<encoded.length() && encoded.charAt(i)!='1';i++);
+            for (; i < encoded.length() && encoded.charAt(i) != '1'; i++) ;
         }
-        String finalMessage=message+encoded.toString().substring(encoded.length()-crc.length()+1);
-        bityPrzeklamaneField.setText(finalMessage);
     }
 
     //sprawdzenie poprawności wiadomości odebranej
@@ -199,16 +214,7 @@ public class MainForm {
         if (message != null && !message.isEmpty()) {
             boolean error = false;
             StringBuilder encoded = new StringBuilder(message);
-            for (int i = 0; i <= encoded.length() - crc.length(); ) {
-                for (int j = 0; j < crc.length(); j++) {
-                    if (encoded.charAt(i + j) == crc.charAt(j)) {
-                        encoded.setCharAt(i + j, '0');
-                    } else {
-                        encoded.setCharAt(i + j, '1');
-                    }
-                }
-                for (; i < encoded.length() && encoded.charAt(i) != '1'; i++) ;
-            }
+            encodeHelper(crc, encoded);
             for (int i = encoded.length() - crc.length(); i < encoded.length(); i++) {
                 //jeśli po wykonaniu operacji modulo (na wiadomości odebranej) reszta jest różna od 0 wystąpił błąd
                 if (encoded.charAt(i) != '0') {
@@ -223,14 +229,14 @@ public class MainForm {
         }
     }
 
-    public void crcFieldNames(){
+    public void crcFieldNames() {
         daneTekstoweLabel.setText("Wiadomość tekstowa");
         daneBinarneLabel.setText("Wiadomość binarna");
         bityPrzeklamaneLabel.setText("Wiadomość wysłana");
         danePrzeklamaneLabel.setText("Wiadomość odebrana");
     }
 
-    public void customFieldNames(){
+    public void customFieldNames() {
         daneTekstoweLabel.setText("Dane tekstowe");
         daneBinarneLabel.setText("Dane binarne");
         bityPrzeklamaneLabel.setText("Bity przekłamane");
