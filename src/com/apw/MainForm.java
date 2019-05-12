@@ -55,10 +55,10 @@ public class MainForm {
                     hamming.licz();
                     bitParzystosciField.setText("" + hamming._parity_count);
                     bityPrzeklamaneField.setText(hamming.wiad_out);
-                    hamming.receive(danePrzeklamaneField.getText());
+                    String msg = hamming.receive(danePrzeklamaneField.getText());
                     System.out.println(danePrzeklamaneField.getText() + " dupa ");
 //                    if(hamming.pobierzKod(bityPrzeklamaneField.getText()))
-//                        komunikatField.setText("błąd");
+                    komunikatField.setText(msg);
 //                    else komunikatField.setText("działa");
                     break;
                 case 5:

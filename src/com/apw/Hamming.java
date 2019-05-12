@@ -112,14 +112,14 @@ class Hamming {
         _parity_count = wiad_out.length() - wiad_in.length;
     }
 
-    void receive(String przeklamana) {
-        if (przeklamana != wiad_out) {
-            return;
+    String receive(String przeklamana) {
+        if (przeklamana.equals(wiad_out)) {
+//            return "Wiadomości są takie same";
         }
 
         int[] a;
         if (przeklamana.isEmpty()) {
-            return;
+            return "";
         } else {
             a = stringToIntArray(przeklamana);
         }
@@ -149,20 +149,26 @@ class Hamming {
         System.out.println(syndrome + " syndrome");
         int error_location = Integer.parseInt(syndrome, 2);
         //int error_location = Integer.parseInt(syndrome, 2);
+
         if (error_location != 0) {
-            System.out.println("Błąd na pozycji " + error_location + ".");
-            miejsce_bledu = error_location - 1;
-            //System.out.println("Błąd na pozycji o indexie " + miejsce_bledu + "." , "Wykryto błąd.");
-            a[error_location - 1] = (a[error_location - 1] + 1) % 2;
-            System.out.println("Poprawiony ciag to:");
-            for (int i = 0; i < a.length; i++) {
-                wiadomosc_poprawiona += a[a.length - i - 1];
-                System.out.print(a[a.length - i - 1]);
+            try {
+                System.out.println("Błąd na pozycji " + error_location + ".");
+
+                miejsce_bledu = error_location - 1;
+                //System.out.println("Błąd na pozycji o indexie " + miejsce_bledu + "." , "Wykryto błąd.");
+                a[error_location - 1] = (a[error_location - 1] + 1) % 2;
+                System.out.println("Poprawiony ciag to:");
+                for (int i = 0; i < a.length; i++) {
+                    wiadomosc_poprawiona += a[a.length - i - 1];
+                    System.out.print(a[a.length - i - 1]);
+                }
+                System.out.println();
+            } catch (Exception e) {
+
             }
-            System.out.println();
         } else {
             System.out.println("Brak błędów");
-
+            return "Brak błędów";
         }
 
         // wyciaganie wiadomosci z poprawionego ciagu
@@ -180,6 +186,7 @@ class Hamming {
             }
         }
         System.out.println();
+        return "Błąd na pozycji " + error_location + ".";
     }
 
     public boolean pobierzKod(String przeklamana) {
