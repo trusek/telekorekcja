@@ -14,14 +14,12 @@ public class MainForm {
     private JPanel mainPanel;
     private JTextField daneTekstoweField;
     private JTextField daneBinarneField;
-    private JTextField daneAlgorytmuField;
     private JTextField bityPrzeklamaneField;
     private JTextField danePrzeklamaneField;
     private JPanel radioPanel;
     private JTextField komunikatField;
     private JTextField bitParzystosciField;
     private JLabel bityPrzeklamaneLabel;
-    private JLabel daneAlgorytmuLabel;
     private JLabel daneBinarneLabel;
     private JLabel danePrzeklamaneLabel;
     private JLabel daneTekstoweLabel;
@@ -31,7 +29,7 @@ public class MainForm {
     private String crc12 = "1100000001111";
     private String crc16 = "11000000000000101";
     private String crcItu = "10001000000100001";
-    private String atm =   "100000111";
+    private String atm = "100000111";
 
     public MainForm() {
 
@@ -49,8 +47,8 @@ public class MainForm {
                     crcDecode(crc12);
                     break;
                 case 4:
-                    doAction(1);
-                    //todo dodać obsługę gdy jest wybrany 4 radio
+//                    hamming();
+                    hammingAction();
                     break;
                 case 5:
                     crcEncode(crcItu);
@@ -84,7 +82,7 @@ public class MainForm {
         });
         radioButton4.addActionListener(e -> {
             radioOption = 4;
-            customFieldNames();
+            hammingFieldNames();
         });
         daneTekstoweField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -102,11 +100,6 @@ public class MainForm {
                 daneBinarneField.setText(stringToBinary(daneTekstoweField.getText()));
             }
         });
-    }
-
-    private void doAction(int a) {
-        daneTekstoweField.setText("dupa dupa" + a);
-
     }
 
     public String stringToBinary(String str) {
@@ -261,5 +254,77 @@ public class MainForm {
         daneBinarneLabel.setText("Dane binarne");
         bityPrzeklamaneLabel.setText("Bity przekłamane");
         danePrzeklamaneLabel.setText("Dane po przekłamaniu");
+    }
+
+    public void hammingFieldNames() {
+        daneTekstoweLabel.setText("Wiadomość tekstowa");
+        daneBinarneLabel.setText("Dane binarne");
+        bityPrzeklamaneLabel.setText("Ilość wymaganych bitów parzystośći");
+        danePrzeklamaneLabel.setText("Zakodowana wiadomość");
+    }
+
+
+    public void hammingAction() {
+        String msg = daneBinarneField.getText();
+        int r = 0;
+        int m = msg.length();
+        //calculate number of parity bits needed using m+r+1<=2^r
+        while (true) {
+            if (m + r + 1 <= Math.pow(2, r)) {
+                break;
+            }
+            r++;
+        }
+//        System.out.println("Number of parity bits needed : " + r);
+        bityPrzeklamaneField.setText("" + r);
+        int transLength = msg.length() + r, temp = 0, temp2 = 0, j = 0;
+        int transMsg[] = new int[transLength + 1]; //+1 because starts with 1
+        for (int i = 1; i <= transLength; i++) {
+            temp2 = (int) Math.pow(2, temp);
+            if (i % temp2 != 0) {
+                transMsg[i] = Integer.parseInt(Character.toString(msg.charAt(j)));
+                j++;
+            } else {
+                temp++;
+            }
+        }
+//        for (int i = 1; i <= transLength; i++) {
+//            System.out.print(transMsg[i]);
+//        }
+//        System.out.println();
+
+        for (int i = 0; i < r; i++) {
+            int smallStep = (int) Math.pow(2, i);
+            int bigStep = smallStep * 2;
+            int start = smallStep, checkPos = start;
+//            System.out.println("Calculating Parity bit for Position : " + smallStep);
+//            System.out.print("Bits to be checked : ");
+            while (true) {
+                for (int k = start; k <= start + smallStep - 1; k++) {
+                    checkPos = k;
+//                    System.out.print(checkPos + " ");
+                    if (k > transLength) {
+                        break;
+                    }
+                    transMsg[smallStep] ^= transMsg[checkPos];
+                }
+                if (checkPos > transLength) {
+                    break;
+                } else {
+                    start = start + bigStep;
+                }
+            }
+//            System.out.println();
+        }
+        StringBuilder hammingMessage = new StringBuilder();
+        //Display encoded message
+//        System.out.print("Hamming Encoded Message : ");
+        for (int i = 1; i <= transLength; i++) {
+            hammingMessage.append(transMsg[i]);
+//            System.out.print(transMsg[i]);
+        }
+        danePrzeklamaneField.setText(hammingMessage.toString());
+//        System.out.print(hammingMessage);
+//        System.out.println();
     }
 }
