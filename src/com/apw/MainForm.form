@@ -2,12 +2,12 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.apw.MainForm">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="627" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="6f0c4" binding="radioPanel" layout-manager="GridLayoutManager" row-count="1" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="6f0c4" binding="radioPanel" layout-manager="GridLayoutManager" row-count="1" column-count="7" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="North"/>
         <properties/>
@@ -40,7 +40,7 @@
           </component>
           <component id="7c63d" class="javax.swing.JRadioButton" binding="radioButton4" default-binding="true">
             <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <text value="Hamming"/>
@@ -52,6 +52,22 @@
             </constraints>
             <properties>
               <text value="Użyj"/>
+            </properties>
+          </component>
+          <component id="32d23" class="javax.swing.JRadioButton" binding="radioButton5">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="CRC-ITU"/>
+            </properties>
+          </component>
+          <component id="4e46d" class="javax.swing.JRadioButton" binding="radioButton6">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="ATM"/>
             </properties>
           </component>
         </children>
@@ -261,6 +277,8 @@
       <member id="ec50a"/>
       <member id="aec3b"/>
       <member id="7c63d"/>
+      <member id="32d23"/>
+      <member id="4e46d"/>
     </group>
   </buttonGroups>
 </form>

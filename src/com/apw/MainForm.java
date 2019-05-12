@@ -25,9 +25,13 @@ public class MainForm {
     private JLabel daneBinarneLabel;
     private JLabel danePrzeklamaneLabel;
     private JLabel daneTekstoweLabel;
+    private JRadioButton radioButton5;
+    private JRadioButton radioButton6;
     private int radioOption = 1;
     private String crc12 = "1100000001111";
     private String crc16 = "11000000000000101";
+    private String crcItu = "10001000000100001";
+    private String atm =   "100000111";
 
     public MainForm() {
 
@@ -48,6 +52,14 @@ public class MainForm {
                     doAction(1);
                     //todo dodać obsługę gdy jest wybrany 4 radio
                     break;
+                case 5:
+                    crcEncode(crcItu);
+                    crcDecode(crcItu);
+                    break;
+                case 6:
+                    crcEncode(atm);
+                    crcDecode(atm);
+                    break;
             }
         });
         radioButton1.addActionListener(e -> {
@@ -60,6 +72,14 @@ public class MainForm {
         });
         radioButton3.addActionListener(e -> {
             radioOption = 3;
+            crcFieldNames();
+        });
+        radioButton5.addActionListener(e -> {
+            radioOption = 5;
+            crcFieldNames();
+        });
+        radioButton6.addActionListener(e -> {
+            radioOption = 6;
             crcFieldNames();
         });
         radioButton4.addActionListener(e -> {
@@ -183,22 +203,22 @@ public class MainForm {
     }
 
     //obliczenie sumy kontrolnej i dodanie jej do wiadomości
-    public void crcEncode(String crc) {
+    public void crcEncode(String generator) {
         String message = daneBinarneField.getText();
         StringBuilder encoded = new StringBuilder(message);
-        for (int i = 0; i < crc.length() - 1; i++) {
+        for (int i = 0; i < generator.length() - 1; i++) {
             encoded.append('0');
         }
-        encodeHelper(crc, encoded);
-        String finalMessage = message + encoded.toString().substring(encoded.length() - crc.length() + 1);
+        encodeHelper(generator, encoded);
+        String finalMessage = message + encoded.toString().substring(encoded.length() - generator.length() + 1);
         bityPrzeklamaneField.setText(finalMessage);
     }
 
-    private void encodeHelper(String crc, StringBuilder encoded) {
-        for (int i = 0; i <= encoded.length() - crc.length(); ) {
-            for (int j = 0; j < crc.length(); j++) {
+    private void encodeHelper(String generator, StringBuilder encoded) {
+        for (int i = 0; i <= encoded.length() - generator.length(); ) {
+            for (int j = 0; j < generator.length(); j++) {
                 //operacja modulo
-                if (encoded.charAt(i + j) == crc.charAt(j)) {
+                if (encoded.charAt(i + j) == generator.charAt(j)) {
                     encoded.setCharAt(i + j, '0');
                 } else {
                     encoded.setCharAt(i + j, '1');
@@ -209,13 +229,13 @@ public class MainForm {
     }
 
     //sprawdzenie poprawności wiadomości odebranej
-    public void crcDecode(String crc) {
+    public void crcDecode(String generator) {
         String message = danePrzeklamaneField.getText();
         if (message != null && !message.isEmpty()) {
             boolean error = false;
             StringBuilder encoded = new StringBuilder(message);
-            encodeHelper(crc, encoded);
-            for (int i = encoded.length() - crc.length(); i < encoded.length(); i++) {
+            encodeHelper(generator, encoded);
+            for (int i = encoded.length() - generator.length(); i < encoded.length(); i++) {
                 //jeśli po wykonaniu operacji modulo (na wiadomości odebranej) reszta jest różna od 0 wystąpił błąd
                 if (encoded.charAt(i) != '0') {
                     error = true;
