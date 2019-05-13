@@ -56,7 +56,7 @@ public class MainForm {
                     bitParzystosciField.setText("" + hamming._parity_count);
                     bityPrzeklamaneField.setText(hamming.wiad_out);
                     String msg = hamming.receive(danePrzeklamaneField.getText());
-                    System.out.println(danePrzeklamaneField.getText() + " dupa ");
+                    System.out.println(danePrzeklamaneField.getText());
 //                    if(hamming.pobierzKod(bityPrzeklamaneField.getText()))
                     komunikatField.setText(msg);
 //                    else komunikatField.setText("działa");
