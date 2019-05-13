@@ -113,15 +113,15 @@ class Hamming {
     }
 
     String receive(String przeklamana) {
-        if (przeklamana.equals(wiad_out)) {
-//            return "Wiadomości są takie same";
-        }
-
         int[] a;
         if (przeklamana.isEmpty()) {
             return "";
         } else {
-            a = stringToIntArray(przeklamana);
+            StringBuilder reverse = new StringBuilder();
+            for (int i = przeklamana.length() - 1; i >= 0; i--) {
+                reverse.append(przeklamana.charAt(i));
+            }
+            a = stringToIntArray(reverse.toString());
         }
 
         System.out.println(wiad_out);
